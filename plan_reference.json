@@ -1,0 +1,174 @@
+{
+  "plan_name": "Half Marathon Plan (Jan 12–Mar 28, 2026)",
+  "start_date": "2026-01-12",
+  "race_date": "2026-03-28",
+  "weeks": [
+    {
+      "week_label": "Week 1",
+      "date_range": "2026-01-12 to 2026-01-18",
+      "goal": "establish rhythm, no soreness",
+      "sessions": {
+        "Monday": "Pilates or Gym (glutes + core)",
+        "Tuesday": "Optional: 20–25 min easy jog",
+        "Wednesday": "6 km easy + 4×20s strides",
+        "Thursday": "5 km relaxed",
+        "Friday": "OFF",
+        "Saturday": "8 km long slow",
+        "Sunday": "5 km easy"
+      },
+      "approx_km": 24
+    },
+    {
+      "week_label": "Week 2",
+      "date_range": "2026-01-19 to 2026-01-25",
+      "goal": "",
+      "sessions": {
+        "Monday": "Strength",
+        "Tuesday": "OFF",
+        "Wednesday": "6 km + 6×20s strides",
+        "Thursday": "6 km",
+        "Friday": "OFF",
+        "Saturday": "9 km",
+        "Sunday": "5 km"
+      },
+      "approx_km": 26
+    },
+    {
+      "week_label": "Week 3",
+      "date_range": "2026-01-26 to 2026-02-01",
+      "goal": "add gentle quality",
+      "sessions": {
+        "Monday": "Strength",
+        "Tuesday": "20 min jog",
+        "Wednesday": "5 km + 6×30s hill strides",
+        "Thursday": "7 km easy",
+        "Friday": "OFF",
+        "Saturday": "10 km",
+        "Sunday": "5 km"
+      },
+      "approx_km": 30
+    },
+    {
+      "week_label": "Week 4",
+      "date_range": "2026-02-02 to 2026-02-08",
+      "goal": "start building real fitness",
+      "sessions": {
+        "Monday": "Strength",
+        "Tuesday": "OFF",
+        "Wednesday": "2 km easy → 3 km steady → 1 km easy",
+        "Thursday": "7 km easy",
+        "Friday": "OFF",
+        "Saturday": "12 km",
+        "Sunday": "6 km"
+      },
+      "approx_km": 32
+    },
+    {
+      "week_label": "Week 5",
+      "date_range": "2026-02-09 to 2026-02-15",
+      "goal": "",
+      "sessions": {
+        "Monday": "Strength",
+        "Tuesday": "25 min jog",
+        "Wednesday": "4×5 min comfortably hard",
+        "Thursday": "8 km easy",
+        "Friday": "OFF",
+        "Saturday": "14 km",
+        "Sunday": "6 km"
+      },
+      "approx_km": 36
+    },
+    {
+      "week_label": "Week 6",
+      "date_range": "2026-02-16 to 2026-02-22",
+      "goal": "",
+      "sessions": {
+        "Monday": "Strength",
+        "Tuesday": "OFF",
+        "Wednesday": "5×1 km @ 5:20–5:30/km",
+        "Thursday": "8 km",
+        "Friday": "OFF",
+        "Saturday": "15 km",
+        "Sunday": "6 km"
+      },
+      "approx_km": 38
+    },
+    {
+      "week_label": "Week 7",
+      "date_range": "2026-02-23 to 2026-03-01",
+      "goal": "",
+      "sessions": {
+        "Monday": "Strength",
+        "Tuesday": "25 min jog",
+        "Wednesday": "3×10 min threshold",
+        "Thursday": "8 km",
+        "Friday": "OFF",
+        "Saturday": "16 km",
+        "Sunday": "6 km"
+      },
+      "approx_km": 40
+    },
+    {
+      "week_label": "Week 8",
+      "date_range": "2026-03-02 to 2026-03-08",
+      "goal": "",
+      "sessions": {
+        "Monday": "Strength",
+        "Tuesday": "OFF",
+        "Wednesday": "6×1 km @ 5:15–5:25",
+        "Thursday": "8 km",
+        "Friday": "OFF",
+        "Saturday": "18 km",
+        "Sunday": "6 km"
+      },
+      "approx_km": 42
+    },
+    {
+      "week_label": "Week 9",
+      "date_range": "2026-03-09 to 2026-03-15",
+      "goal": "peak week",
+      "sessions": {
+        "Monday": "Strength",
+        "Tuesday": "25 min jog",
+        "Wednesday": "3×3 km @ race pace",
+        "Thursday": "8 km",
+        "Friday": "OFF",
+        "Saturday": "20 km (last 8 km fast)",
+        "Sunday": "6 km"
+      },
+      "approx_km": 42
+    },
+    {
+      "week_label": "Week 10",
+      "date_range": "2026-03-16 to 2026-03-22",
+      "goal": "start taper",
+      "sessions": {
+        "Monday": "Light strength",
+        "Tuesday": "OFF",
+        "Wednesday": "5×1 km @ race pace",
+        "Thursday": "7 km",
+        "Friday": "OFF",
+        "Saturday": "14 km",
+        "Sunday": "6 km"
+      },
+      "approx_km": 32
+    },
+    {
+      "week_label": "Race Week",
+      "date_range": "2026-03-23 to 2026-03-28",
+      "goal": "",
+      "sessions": {
+        "Monday": "5 km easy",
+        "Tuesday": "OFF",
+        "Wednesday": "4 km + 4 strides",
+        "Thursday": "3 km",
+        "Friday": "OFF",
+        "Saturday": "BOSTON HALF MARATHON 🏁",
+        "Sunday": "OFF"
+      },
+      "approx_km": null
+    }
+  ]
+}
+
+

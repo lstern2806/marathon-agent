@@ -1,0 +1,11 @@
+# secrets
+.env
+
+# personal running data
+data/
+runner_history.json
+memory.json
+
+#python extras
+__pycache__/
+*.pyc

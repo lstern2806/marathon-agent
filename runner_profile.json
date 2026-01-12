@@ -1,0 +1,21 @@
+{
+  "name": "Leah",
+  "units": "miles",
+  "goal_race": {
+    "type": "marathon",
+    "date": "2026-03-28",
+    "goal_time": null,
+    "current_phase": "base-building"
+  },
+  "availability": {
+    "days_per_week": 5,
+    "preferred_long_run_day": "Saturday"
+  },
+  "preferences": {
+    "strength_training": true,
+    "cross_training": ["pilates", "gym"],
+    "avoid_double_runs": true
+  },
+  "injuries": []
+}
+

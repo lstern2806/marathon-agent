@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Marathon Agent</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; max-width: 900px; margin: 24px auto; padding: 0 16px; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 14px; margin: 12px 0; }
+    #chat { height: 360px; overflow: auto; padding: 12px; background: #fafafa; border-radius: 12px; border: 1px solid #eee; }
+    .msg { margin: 10px 0; }
+    .you { font-weight: 600; }
+    .coach { font-weight: 600; }
+    textarea { width: 100%; min-height: 70px; }
+    button { padding: 10px 14px; border-radius: 10px; border: 1px solid #ccc; background: white; cursor: pointer; }
+    button:hover { background: #f5f5f5; }
+    input { padding: 10px; border-radius: 10px; border: 1px solid #ccc; flex: 1; }
+    small { color: #666; }
+    pre { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>🏃 Marathon Agent</h1>
+  <small>Local web app (Flask). Your data stays on your laptop.</small>
+
+  <div class="row">
+    <div class="card" style="flex:1; min-width: 280px;">
+      <h3>Today / Tomorrow</h3>
+      <pre id="today"></pre>
+      <pre id="tomorrow"></pre>
+      <button onclick="refreshPlans()">Refresh</button>
+    </div>
+
+    <div class="card" style="flex:1; min-width: 280px;">
+      <h3>Status</h3>
+      <pre id="status"></pre>
+      <button onclick="refreshStatus()">Refresh</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Chat</h3>
+    <div id="chat"></div>
+    <div class="row" style="margin-top:12px;">
+      <input id="q" placeholder="Ask about your plan, paces, swaps, soreness..." />
+      <button onclick="sendChat()">Send</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Notes</h3>
+    <div class="row">
+      <input id="noteText" placeholder="e.g., sore calves, slept 5h, stress week" />
+      <button onclick="saveNote()">Save note</button>
+    </div>
+    <small>Notes influence coaching responses.</small>
+  </div>
+
+<script>
+  const chatEl = document.getElementById("chat");
+
+  function addMsg(who, text) {
+    const div = document.createElement("div");
+    div.className = "msg";
+    div.innerHTML = `<div class="${who}">${who}:</div><div>${escapeHtml(text).replace(/\n/g,"<br>")}</div>`;
+    chatEl.appendChild(div);
+    chatEl.scrollTop = chatEl.scrollHeight;
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  async function refreshPlans() {
+    const t = await (await fetch("/api/plan/today")).json();
+    const tm = await (await fetch("/api/plan/tomorrow")).json();
+    document.getElementById("today").textContent = `Today (${t.date}) — ${t.week || ""} ${t.day}: ${t.workout || "OFF"}`;
+    document.getElementById("tomorrow").textContent = `Tomorrow (${tm.date}) — ${tm.week || ""} ${tm.day}: ${tm.workout || "OFF"}`;
+  }
+
+  async function refreshStatus() {
+    const s = await (await fetch("/api/status")).json();
+    document.getElementById("status").textContent =
+      JSON.stringify({
+        runner_profile: s.runner_profile,
+        training_summary: s.training_summary,
+        pace_band: s.runner_history?.pace_band_last_8_weeks_min_per_mile,
+        best_efforts: s.runner_history?.best_efforts_last_8_weeks,
+        recent_notes: s.notes
+      }, null, 2);
+  }
+
+  async function sendChat() {
+    const q = document.getElementById("q");
+    const text = q.value.trim();
+    if (!text) return;
+    q.value = "";
+    addMsg("you", text);
+
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({question: text})
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      addMsg("coach", `Error: ${data.error || "unknown"}`);
+      return;
+    }
+    addMsg("coach", data.answer);
+  }
+
+  async function saveNote() {
+    const n = document.getElementById("noteText");
+    const text = n.value.trim();
+    if (!text) return;
+    n.value = "";
+
+    const res = await fetch("/api/note", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({text})
+    });
+
+    if (res.ok) {
+      addMsg("coach", "Saved note ✅");
+      refreshStatus();
+    } else {
+      const data = await res.json();
+      addMsg("coach", `Error: ${data.error || "could not save note"}`);
+    }
+  }
+
+let weekStart = null; // YYYY-MM-DD
+
+function mondayOfWeek(d) {
+  // d is a Date object
+  const day = d.getDay(); // 0 Sun ... 6 Sat
+  const diff = (day === 0 ? -6 : 1 - day); // shift to Monday
+  const monday = new Date(d);
+  monday.setDate(d.getDate() + diff);
+  return monday;
+}
+
+function toISODate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const da = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${da}`;
+}
+
+async function loadWeek() {
+  const url = weekStart ? `/api/plan/week?start=${weekStart}` : `/api/plan/week`;
+  const data = await (await fetch(url)).json();
+
+  weekStart = data.start;
+  document.getElementById("weekRange").textContent = `${data.start} → ${data.end}`;
+
+  const grid = document.getElementById("weekGrid");
+  grid.innerHTML = "";
+
+  for (const day of data.days) {
+    const div = document.createElement("div");
+    div.className = "day";
+    div.innerHTML = `
+      <div class="tag">${day.weekday}</div>
+      <h4>${day.date}</h4>
+      <div class="small">${day.week_label || ""}</div>
+      <div class="workout">${escapeHtml(day.workout)}</div>
+    `;
+    grid.appendChild(div);
+  }
+}
+
+function shiftWeek(deltaDays) {
+  const d = new Date(weekStart);
+  d.setDate(d.getDate() + deltaDays);
+  weekStart = toISODate(d);
+  loadWeek();
+}
+
+function goThisWeek() {
+  const monday = mondayOfWeek(new Date());
+  weekStart = toISODate(monday);
+  loadWeek();
+}
+
+
+  refreshPlans();
+  refreshStatus();
+  goThisWeek();
+</script>
+</body>
+</html>
+
